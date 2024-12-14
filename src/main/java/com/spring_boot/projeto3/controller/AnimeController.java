@@ -4,6 +4,7 @@ import com.spring_boot.projeto3.model.Anime;
 import com.spring_boot.projeto3.requests.AnimePostRequestBody;
 import com.spring_boot.projeto3.requests.AnimePutRequestBody;
 import com.spring_boot.projeto3.service.AnimeService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,8 +18,9 @@ public class AnimeController {
     @Autowired
     private AnimeService animeService;
 
+
     @PostMapping
-    public ResponseEntity<Anime> save(@RequestBody AnimePostRequestBody animePostRequestBody){
+    public ResponseEntity<Anime> save(@RequestBody @Valid AnimePostRequestBody animePostRequestBody){
         return new ResponseEntity<>(animeService.save(animePostRequestBody), HttpStatus.CREATED);
 
     }
@@ -31,7 +33,7 @@ public class AnimeController {
         return ResponseEntity.ok(animeService.findByIdOrThrowException(id));
     }
     @PutMapping
-    public ResponseEntity<Void> update(@RequestBody AnimePutRequestBody animePutRequestBody){
+    public ResponseEntity<Void> update(@RequestBody @Valid AnimePutRequestBody animePutRequestBody){
         animeService.update(animePutRequestBody);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

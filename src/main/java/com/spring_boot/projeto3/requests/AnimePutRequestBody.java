@@ -1,5 +1,7 @@
 package com.spring_boot.projeto3.requests;
 
-public record AnimePutRequestBody(Long id, String name) {
+import jakarta.validation.constraints.NotBlank;
+
+public record AnimePutRequestBody(Long id, @NotBlank(message = "cannot be empty") String name) {
 
 }
