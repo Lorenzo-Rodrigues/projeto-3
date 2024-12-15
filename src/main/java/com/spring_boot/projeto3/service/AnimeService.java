@@ -6,6 +6,8 @@ import com.spring_boot.projeto3.repository.AnimeRepository;
 import com.spring_boot.projeto3.requests.AnimePostRequestBody;
 import com.spring_boot.projeto3.requests.AnimePutRequestBody;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -22,8 +24,8 @@ public class AnimeService {
     public Anime save(AnimePostRequestBody animePostRequestBody){
        return animeRepository.save(animeMapper.ToAnime(animePostRequestBody));
     }
-    public List<Anime> listAll(){
-        return animeRepository.findAll();
+    public Page<Anime> listAll(Pageable pageable){
+        return animeRepository.findAll(pageable);
     }
     public Anime findByIdOrThrowException(long id){
         return animeRepository.findById(id)

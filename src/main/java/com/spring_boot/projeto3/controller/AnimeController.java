@@ -6,6 +6,8 @@ import com.spring_boot.projeto3.requests.AnimePutRequestBody;
 import com.spring_boot.projeto3.service.AnimeService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,8 +27,8 @@ public class AnimeController {
 
     }
     @GetMapping
-    public ResponseEntity<List<Anime>> listAllNonPageable(){
-        return ResponseEntity.ok(animeService.listAll());
+    public ResponseEntity<Page<Anime>> listAllNonPageable(Pageable pageable){
+        return ResponseEntity.ok(animeService.listAll(pageable));
     }
     @GetMapping(path = "/{id}")
     public ResponseEntity<Anime> findById(@PathVariable long id){
