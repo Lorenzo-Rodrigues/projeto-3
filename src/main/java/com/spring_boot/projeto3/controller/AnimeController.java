@@ -12,8 +12,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("/animes")
 public class AnimeController {
@@ -27,8 +25,8 @@ public class AnimeController {
 
     }
     @GetMapping
-    public ResponseEntity<Page<Anime>> listAllNonPageable(Pageable pageable){
-        return ResponseEntity.ok(animeService.listAll(pageable));
+    public ResponseEntity<Page<Anime>> listAllPageable(Pageable pageable){
+        return ResponseEntity.ok(animeService.listAllPageable(pageable));
     }
     @GetMapping(path = "/{id}")
     public ResponseEntity<Anime> findById(@PathVariable long id){
