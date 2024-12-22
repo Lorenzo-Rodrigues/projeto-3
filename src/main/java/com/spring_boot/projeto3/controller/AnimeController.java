@@ -22,7 +22,6 @@ public class AnimeController {
     @PostMapping
     public ResponseEntity<Anime> save(@RequestBody @Valid AnimePostRequestBody animePostRequestBody){
         return new ResponseEntity<>(animeService.save(animePostRequestBody), HttpStatus.CREATED);
-
     }
     @GetMapping
     public ResponseEntity<Page<Anime>> listAllPageable(Pageable pageable){

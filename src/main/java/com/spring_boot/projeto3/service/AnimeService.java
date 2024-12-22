@@ -18,7 +18,7 @@ public class AnimeService  {
     @Autowired
     private AnimeRepository animeRepository;
     @Autowired
-    AnimeMapper animeMapper;
+    private AnimeMapper animeMapper;
 
     public Anime save(AnimePostRequestBody animePostRequestBody){
        return animeRepository.save(animeMapper.ToAnime(animePostRequestBody));
