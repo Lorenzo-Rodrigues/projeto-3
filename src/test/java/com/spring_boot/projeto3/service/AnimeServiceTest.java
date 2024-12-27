@@ -3,13 +3,10 @@ package com.spring_boot.projeto3.service;
 import com.spring_boot.projeto3.exception.BadRequestException;
 import com.spring_boot.projeto3.exception.CustomizedException;
 import com.spring_boot.projeto3.mapper.AnimeMapper;
-import com.spring_boot.projeto3.mapper.AnimeMapperImpl;
 import com.spring_boot.projeto3.model.Anime;
 import com.spring_boot.projeto3.repository.AnimeRepository;
 import com.spring_boot.projeto3.requests.AnimePostRequestBody;
 import com.spring_boot.projeto3.requests.AnimePutRequestBody;
-import com.spring_boot.projeto3.util.AnimeCreator;
-import org.assertj.core.api.Assert;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -48,10 +45,11 @@ class AnimeServiceTest {
     @Test
     @DisplayName("listAllPageable returns list of anime inside page object when successful")
     void listAllPageable_ReturnsListOfAnimesInsidePageObject_WhenSuccessful(){
-        PageImpl<Anime> animePage = new PageImpl<>(List.of(AnimeCreator.createValidAnime()));
+        var validAnime = new Anime(1L,"Baki");
+        PageImpl<Anime> animePage = new PageImpl<>(List.of(validAnime));
         when(animeRepositoryMock.findAll(ArgumentMatchers.any(PageRequest.class)))
                 .thenReturn(animePage);
-        String expectedName = AnimeCreator.createValidAnime().getName();
+        String expectedName = validAnime.getName();
 
         Page<Anime> animePageable = animeService.listAllPageable(PageRequest.of(1,1));
 
@@ -64,9 +62,10 @@ class AnimeServiceTest {
     @Test
     @DisplayName("findById returns anime when successful")
     void findById_ReturnsAnime_WhenSuccessful(){
+        var validAnime = new Anime(1L,"Baki");
         when(animeRepositoryMock.findById(ArgumentMatchers.anyLong()))
-                .thenReturn(Optional.of(AnimeCreator.createValidAnime()));
-        Long expectedId = AnimeCreator.createValidAnime().getId();
+                .thenReturn(Optional.of(validAnime));
+        Long expectedId = validAnime.getId();
         Anime anime = animeService.findById(1);
 
         Assertions.assertThat(anime).isNotNull();
@@ -84,9 +83,10 @@ class AnimeServiceTest {
     @Test
     @DisplayName("findByName returns anime when successful")
     void findByName_ReturnsAnime_WhenSuccessful(){
+        var validAnime = new Anime(1L,"Baki");
         when(animeRepositoryMock.findByName(ArgumentMatchers.anyString()))
-                .thenReturn(Optional.of(AnimeCreator.createValidAnime()));
-        String expectedName = AnimeCreator.createValidAnime().getName();
+                .thenReturn(Optional.of(validAnime));
+        String expectedName = validAnime.getName();
 
         Anime anime = animeService.findByName("abc");
 
