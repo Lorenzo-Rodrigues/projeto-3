@@ -36,12 +36,6 @@ class AnimeServiceTest {
     @Mock
     private AnimeMapper animeMapperMock;
 
-
-    @BeforeEach
-    void setUp(){
-
-    }
-
     @Test
     @DisplayName("listAllPageable returns list of anime inside page object when successful")
     void listAllPageable_ReturnsListOfAnimesInsidePageObject_WhenSuccessful(){
@@ -49,7 +43,6 @@ class AnimeServiceTest {
         PageImpl<Anime> animePage = new PageImpl<>(List.of(validAnime));
         when(animeRepositoryMock.findAll(ArgumentMatchers.any(PageRequest.class)))
                 .thenReturn(animePage);
-        String expectedName = validAnime.getName();
 
         Page<Anime> animePageable = animeService.listAllPageable(PageRequest.of(1,1));
 
@@ -57,7 +50,7 @@ class AnimeServiceTest {
         Assertions.assertThat(animePageable.toList())
                 .isNotEmpty()
                 .hasSize(1);
-        Assertions.assertThat(animePageable.toList().getFirst().getName()).isEqualTo(expectedName);
+        Assertions.assertThat(animePageable.toList().getFirst().getName()).isEqualTo(validAnime.getName());
     }
     @Test
     @DisplayName("findById returns anime when successful")
@@ -116,34 +109,22 @@ class AnimeServiceTest {
         Assertions.assertThat(anime.getId()).isNotNull();
     }
     @Test
-    @DisplayName("save throws CustomizedException when try to save anime that starts with Z")
-    void save_ThrowsCustomizedException_WhenTryToSaveAnimeThatStartsWithZ() {
-        var animePostRequestBody = new AnimePostRequestBody("Zelda");
-        var invalidAnime = new Anime(1L,"Zelda");
-
-        when(animeMapperMock.ToAnime(animePostRequestBody)).thenReturn(invalidAnime);
-
-        Assertions.assertThatExceptionOfType(CustomizedException.class)
-                .isThrownBy(()->animeService.save(animePostRequestBody));
-    }
-    @Test
     @DisplayName("update updates anime when successful")
     void update_UpdatesAnime_WhenSuccessful(){
         var savedAnime = new Anime(1L,"Baki");
-        var animeUpdateRequest = new AnimePutRequestBody(1L,"Bleach");
+        var animePutRequestBody = new AnimePutRequestBody(1L,"Bleach");
         var expectedAnime = new Anime(1L,"Bleach");
 
         when(animeRepositoryMock.findById(ArgumentMatchers.anyLong()))
                 .thenReturn(Optional.of(savedAnime));
 
-        when(animeMapperMock.ToAnime(animeUpdateRequest)).thenReturn(expectedAnime);
+        when(animeMapperMock.ToAnime(animePutRequestBody)).thenReturn(expectedAnime);
 
-        expectedAnime.setId(savedAnime.getId());
         when(animeRepositoryMock.save(expectedAnime)).thenReturn(expectedAnime);
 
-        Anime finalResult = animeService.update(animeUpdateRequest);
+        Anime finalResult = animeService.update(animePutRequestBody);
 
         Assertions.assertThat(finalResult.getId()).isEqualTo(savedAnime.getId());
-        Assertions.assertThat(finalResult.getName()).isEqualTo(animeUpdateRequest.name());
+        Assertions.assertThat(finalResult.getName()).isEqualTo(expectedAnime.getName());
     }
 }

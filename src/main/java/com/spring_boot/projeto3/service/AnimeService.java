@@ -21,9 +21,6 @@ public class AnimeService  {
     private AnimeMapper animeMapper;
 
     public Anime save(AnimePostRequestBody animePostRequestBody){
-        if(animePostRequestBody.name().startsWith("Z")){
-            throw new CustomizedException();
-        }
         return animeRepository.save(animeMapper.ToAnime(animePostRequestBody));
     }
     public Page<Anime> listAllPageable(Pageable pageable){

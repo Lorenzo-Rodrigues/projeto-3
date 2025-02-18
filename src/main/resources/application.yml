@@ -1,9 +1,18 @@
 spring:
+  application:
+    name: projeto-3
   datasource:
-    url: jdbc:postgresql://localhost:5432/animes
+    url: jdbc:postgresql://localhost:5432/anime?createDatabaseIfNotExist=true
     username: postgres
-    password: 123
+    password: example
   jpa:
     hibernate:
       ddl-auto: update
-    show-sql: true
+
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: [ "prometheus", "metrics", "info", "health" ]
+
